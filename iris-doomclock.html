@@ -1,0 +1,44 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="iris-doomclock">
+  <template>
+    <style include="shared-styles"></style>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    {{timer}}
+  </template>
+
+  <script>
+    (function() {
+      'use strict';
+      Polymer({
+        is: 'iris-doomclock',
+        properties: {
+          start: {
+            type: Number,
+            value: function() {
+              return Date.now();
+            }
+          }
+        },
+        ready() {
+          this.calc();
+          setInterval(() => this.calc(), 1000)
+        },
+        calc() {
+          let now = Date.now();
+          let sec = parseInt((now - this.start) / 1000);
+          let mins = (sec / 60) | 0;
+          let secs = sec % 60;
+          mins = mins.toString().length == 1 ? '0' + mins : mins;
+          secs = secs.toString().length == 1 ? '0' + secs : secs;
+          this.timer = mins + ':' + secs;
+        }
+      });
+    })();
+  </script>
+
+</dom-module>
