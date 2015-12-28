@@ -8,7 +8,9 @@
         display: block;
       }
     </style>
-    {{timer}}
+    <span class$="{{this.state}}">
+      {{timer}}
+    </span>
   </template>
 
   <script>
@@ -17,7 +19,15 @@
       Polymer({
         is: 'iris-doomclock',
         properties: {
-          start: {
+          direction: { //@NOTE: timer or countdown
+            type: String,
+            value: 'up'
+          },
+          redZone: { //@NOTE: countdown redzone in ms
+            type: Number,
+            value: 0
+          },
+          start: { //@NOTE: initial value of timer
             type: Number,
             value: function() {
               return Date.now();
@@ -25,14 +35,24 @@
           }
         },
         ready() {
+          if (this.direction === 'down') this.restart();
+          this.state = "green";
           this.calc();
-          setInterval(() => this.calc(), 1000)
+          setInterval(() => this.calc(), 1000);
+        },
+        restart() {
+          this.zero = Date.now();
         },
         calc() {
           let now = Date.now();
-          let sec = parseInt((now - this.start) / 1000);
-          let mins = (sec / 60) | 0;
-          let secs = sec % 60;
+          let time = this.direction === 'up' ? now - this.start : this.start - (now - this.zero);
+
+          if (this.redZone && time < this.redZone) this.state = "red";
+
+          time = parseInt(time / 1000);
+
+          let mins = (time / 60) | 0;
+          let secs = time % 60;
           mins = mins.toString().length == 1 ? '0' + mins : mins;
           secs = secs.toString().length == 1 ? '0' + secs : secs;
           this.timer = mins + ':' + secs;
