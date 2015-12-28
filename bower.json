@@ -1,0 +1,22 @@
+{
+  "name": "iris-polymer-doomclock",
+  "homepage": "https://github.com/sdk-group/iris-polymer-doomclock",
+  "authors": [
+    "artificial-life <proteus.protocol@gmail.com>"
+  ],
+  "description": "timer",
+  "main": "iris-doomclock.html",
+  "moduleType": [],
+  "keywords": [
+    "timer",
+    "countdown"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
