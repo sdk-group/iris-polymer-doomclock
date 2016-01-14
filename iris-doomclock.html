@@ -41,6 +41,7 @@
           setInterval(() => this.calc(), 1000);
         },
         restart() {
+          this.state = "green";
           this.zero = Date.now();
         },
         calc() {
