@@ -7,6 +7,14 @@
       :host {
         display: block;
       }
+      
+      span.green {
+        @apply(--doomclcok-green)
+      }
+      
+      span.red {
+        @apply(--doomclcok-red)
+      }
     </style>
     <span class$="{{state}}">
       {{timer}}
@@ -50,7 +58,7 @@
 
           if (this.redZone && ((time < this.redZone && this.direction == 'down') || (time > this.redZone && this.direction == 'up'))) this.state = "red";
 
-          time = parseInt(time / 1000);
+          time = time > 0 ? parseInt(time / 1000) : 0;
 
           let mins = (time / 60) | 0;
           let secs = time % 60;
