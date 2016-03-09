@@ -7,11 +7,11 @@
       :host {
         display: block;
       }
-
+      
       span.green {
         @apply(--doomclcok-green)
       }
-
+      
       span.red {
         @apply(--doomclcok-red)
       }
@@ -22,7 +22,7 @@
   </template>
 
   <script>
-    (function () {
+    (function() {
       'use strict';
       Polymer({
         is: 'iris-doomclock',
@@ -37,7 +37,7 @@
           },
           start: { //@NOTE: initial value of timer
             type: Number,
-            value: function () {
+            value: function() {
               return Date.now();
             }
           }
@@ -51,29 +51,21 @@
           this.state = "green";
           this.zero = Date.now();
           this.calc();
-          this.int_id = setInterval(() => this.calc(), 1000);
+          this.int_id = setInterval(() => this.calc(), 500);
         },
         calc() {
           let now = Date.now();
-          let time = this.direction === 'up'
-            ? now - this.start
-            : this.start - (now - this.zero);
+          let time = this.direction === 'up' ? now - this.start : this.start - (now - this.zero);
 
-          if (this.redZone && ((time < this.redZone && this.direction == 'down') || (time > this.redZone && this.direction == 'up'))) 
+          if (this.redZone && ((time < this.redZone && this.direction == 'down') || (time > this.redZone && this.direction == 'up')))
             this.state = "red";
-          
-          time = time > 0
-            ? parseInt(time / 1000)
-            : 0;
+
+          time = time > 0 ? parseInt(time / 1000) : 0;
 
           let mins = (time / 60) | 0;
           let secs = time % 60;
-          mins = mins.toString().length == 1
-            ? '0' + mins
-            : mins;
-          secs = secs.toString().length == 1
-            ? '0' + secs
-            : secs;
+          mins = mins.toString().length == 1 ? '0' + mins : mins;
+          secs = secs.toString().length == 1 ? '0' + secs : secs;
           this.timer = mins + ':' + secs;
         }
       });
