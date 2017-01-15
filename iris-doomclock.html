@@ -7,14 +7,15 @@
       :host {
         display: block;
       }
-      
+
       span.green {
         @apply(--doomclcok-green)
       }
-      
+
       span.red {
         @apply(--doomclcok-red)
       }
+
     </style>
     <span class$="{{state}}">
       {{timer}}
@@ -22,7 +23,7 @@
   </template>
 
   <script>
-    (function() {
+    (function () {
       'use strict';
       Polymer({
         is: 'iris-doomclock',
@@ -37,9 +38,13 @@
           },
           start: { //@NOTE: initial value of timer
             type: Number,
-            value: function() {
+            value: function () {
               return Date.now();
             }
+          },
+          canNegative: {
+            type: Boolean,
+            value: false
           }
         },
         ready() {
@@ -55,21 +60,37 @@
         },
         calc() {
           let now = Date.now();
-          let time = this.direction === 'up' ? now - this.start : this.start - (now - this.zero);
+          let time = this.direction === 'up'
+            ? now - this.start
+            : this.start - (now - this.zero);
 
           if (this.redZone && ((time < this.redZone && this.direction == 'down') || (time > this.redZone && this.direction == 'up')))
             this.state = "red";
 
-          time = time > 0 ? parseInt(time / 1000) : 0;
+          time = (time > 0 || this.canNegative)
+            ? parseInt(time / 1000)
+            : 0;
 
-          let mins = (time / 60) | 0;
-          let secs = time % 60;
-          mins = mins.toString().length == 1 ? '0' + mins : mins;
-          secs = secs.toString().length == 1 ? '0' + secs : secs;
-          this.timer = mins + ':' + secs;
+          let mins = Math.abs(time / 60) | 0;
+          let secs = Math.abs(time % 60);
+          let sign = time < 0
+            ? '-'
+            : '';
+
+          mins = mins.toString().length == 1
+            ? '0' + mins
+            : mins;
+          secs = secs.toString().length == 1
+            ? '0' + secs
+            : secs;
+          this.timer = `${sign}${mins}:${secs}`;
         }
       });
     })();
   </script>
+
+</dom-module>
+this.timer = mins + ':' + secs; } }); })();
+</script>
 
 </dom-module>
